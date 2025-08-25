@@ -193,6 +193,9 @@ export default function KycProfileCard() {
     toast.success(
       `${retailer.personalDetails.fullName}'s KYC has been approved successfully.`
     );
+     setTimeout(() => {
+          router.push("/dashboard");  
+        }, 1000);
   };
 
   const handleReject = () => {
