@@ -3,6 +3,7 @@ import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import DocProfileCar from "@/components/molecules/DocProfileCar";
 import React from "react";
 
+
 export const metadata = {
   title: "Next.js details | Fintree",
   description:
