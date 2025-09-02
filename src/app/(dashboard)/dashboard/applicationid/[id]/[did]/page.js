@@ -1,26 +1,81 @@
+
+"use client";
+
 import ComponentCard from "@/components/common/ComponentCard";
 import PageBreadcrumb from "@/components/common/PageBreadCrumb";
 import DocProfileCar from "@/components/molecules/DocProfileCar";
-import React from "react";
-
-
-export const metadata = {
-  title: "Next.js details | Fintree",
-  description:
-    "This is Next.js Basic Table page for TailAdmin Tailwind CSS Admin Dashboard Template",
-};
-
-
+import React, { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { retailerData } from "@/utils/retailerData";
 
 export default function Page() {
+  const { id, did } = useParams();
+  const [retailer, setRetailer] = useState(null);
+  const [docInfo, setDocInfo] = useState(null);
+    const router = useRouter();
+
+  useEffect(() => {
+    if (id && did) {
+      const foundRetailer = retailerData.find((r) => r.id === Number(id));
+
+      if (foundRetailer) {
+        const document = foundRetailer.documentsInfo?.[did] || null;
+
+        setRetailer(foundRetailer);
+        setDocInfo(document);
+      } else {
+        setRetailer(null);
+        setDocInfo(null);
+      }
+    }
+  }, [id, did]);
+
   return (
     <div>
-      <PageBreadcrumb pageTitle="Application" />
+      <PageBreadcrumb showBackButton
+      onBack={() => router.back()} title="Document Information"  />
       <div className="space-y-6">
         <ComponentCard title="Application data">
-          <DocProfileCar />
+          {retailer ? (
+            <DocProfileCar
+              userName={retailer?.userName || retailer?.kyc?.personalDetails?.fullName}
+              docInfo={docInfo} type={did}
+            />
+          ) : (
+            <p className="text-gray-500">No retailer found</p>
+          )}
         </ComponentCard>
       </div>
     </div>
   );
 }
+
+//***************************2-9-25 6:07*********************************** */
+
+
+// import ComponentCard from "@/components/common/ComponentCard";
+// import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+// import DocProfileCar from "@/components/molecules/DocProfileCar";
+// import React from "react";
+
+
+// export const metadata = {
+//   title: "Next.js details | Fintree",
+//   description:
+//     "This is Next.js Basic Table page for TailAdmin Tailwind CSS Admin Dashboard Template",
+// };
+
+
+
+// export default function Page() {
+//   return (
+//     <div>
+//       <PageBreadcrumb pageTitle="Application" />
+//       <div className="space-y-6">
+//         <ComponentCard title="Application data">
+//           <DocProfileCar />
+//         </ComponentCard>
+//       </div>
+//     </div>
+//   );
+// }
